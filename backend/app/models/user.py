@@ -1,4 +1,6 @@
-from sqlalchemy import Integer, String
+from datetime import datetime
+
+from sqlalchemy import Boolean, DateTime, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.app.database.base import Base
@@ -13,12 +15,40 @@ class User(Base):
         index=True
     )
 
-    name: Mapped[str] = mapped_column(
-        String(100)
+    full_name: Mapped[str] = mapped_column(
+        String(100),
+        nullable=False
     )
 
     email: Mapped[str] = mapped_column(
         String(255),
         unique=True,
-        index=True
+        index=True,
+        nullable=False
+    )
+
+    hashed_password: Mapped[str] = mapped_column(
+        String(255),
+        nullable=False
+    )
+
+    is_active: Mapped[bool] = mapped_column(
+        Boolean,
+        default=True
+    )
+
+    is_superuser: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow,
+        onupdate=datetime.utcnow
     )
