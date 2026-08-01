@@ -1,14 +1,19 @@
 from fastapi import FastAPI
+from backend.app.core.config import settings
+
 app = FastAPI(
-    title="AI Finance OS",
+    title=settings.PROJECT_NAME,
     version="1.0.0",
-    descripition="Enterprisee Multi-Agent Finance Platform"
+    description="Enterprise Multi-Agent Finance Platform",
 )
+
 @app.get("/")
 def home():
     return {
-        "message": "Welcome to AI Finance OS"
+        "message": f"Welcome to {settings.PROJECT_NAME}"
     }
+
+
 @app.get("/health")
 def health():
     return {
