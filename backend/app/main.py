@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from backend.app.core.config import settings
 from backend.app.api.auth import router as auth_router
+from backend.app.api.users import router as users_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -11,6 +12,11 @@ app = FastAPI(
 app.include_router(
     auth_router,
     prefix=settings.API_V1_STR
+)
+
+app.include_router(
+    users_router,
+    prefix=settings.API_V1_STR,
 )
 
 @app.get("/")
