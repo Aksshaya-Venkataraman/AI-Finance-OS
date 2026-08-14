@@ -1,8 +1,20 @@
 from sqlalchemy.orm import Session
 
-from backend.app.core.security import (hash_password, verify_password, create_access_token,)
+from backend.app.core.security import (
+    hash_password,
+    verify_password,
+    create_access_token,
+)
+
 from backend.app.models.user import User
-from backend.app.schemas.user import (UserCreate, Token,)
+
+from backend.app.schemas.user import (
+    UserCreate,
+    Token,
+    UserUpdate,
+    ChangePassword,
+)
+
 
 def create_user(db: Session, user: UserCreate) -> User:
     # Check if email already exists
@@ -31,6 +43,7 @@ def create_user(db: Session, user: UserCreate) -> User:
     db.refresh(new_user)
 
     return new_user
+
 
 def authenticate_user(
     db: Session,
@@ -63,3 +76,78 @@ def authenticate_user(
         access_token=access_token,
         token_type="bearer",
     )
+
+
+def update_user(
+    db: Session,
+    current_user: User,
+    user_update: UserUpdate,
+) -> User:
+
+    # Update full name if provided
+    if user_update.full_name is not None:
+        current_user.full_name = user_update.full_name
+
+    # Update email if provided
+    if (
+        user_update.email is not None
+        and user_update.email != current_user.email
+    ):
+        existing_user = (
+            db.query(User)
+            .filter(User.email == user_update.email)
+            .first()
+        )
+
+        if existing_user:
+            raise ValueError("Email already registered")
+
+        current_user.email = user_update.email
+
+    db.commit()
+    db.refresh(current_user)
+
+    return current_user
+
+
+def change_password(
+    db: Session,
+    current_user: User,
+    password_data: ChangePassword,
+) -> None:
+
+    # Verify current password
+    if not verify_password(
+        password_data.current_password,
+        current_user.hashed_password,
+    ):
+        raise ValueError("Current password is incorrect")
+
+    # Prevent reusing the same password
+    if verify_password(
+        password_data.new_password,
+        current_user.hashed_password,
+    ):
+        raise ValueError(
+            "New password must be different from the current password"
+        )
+
+    # Hash the new password
+    current_user.hashed_password = hash_password(
+        password_data.new_password
+    )
+
+    # Save changes
+    db.commit()
+
+def deactivate_user(
+    db: Session,
+    current_user: User,
+) -> User:
+
+    current_user.is_active = False
+
+    db.commit()
+    db.refresh(current_user)
+
+    return current_user
