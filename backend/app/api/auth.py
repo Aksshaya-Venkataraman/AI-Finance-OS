@@ -8,11 +8,13 @@ from backend.app.schemas.user import (
     UserCreate,
     UserResponse,
     Token,
+    ForgotPasswordRequest,
 )
 
 from backend.app.services.auth_service import (
     create_user,
     authenticate_user,
+    create_password_reset_request,
 )
 
 router = APIRouter(
@@ -49,5 +51,27 @@ def login(
     except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(e),
+        )
+
+@router.post("/forgot-password")
+def forgot_password(
+    request: ForgotPasswordRequest,
+    db: Session = Depends(get_db),
+):
+    try:
+        token = create_password_reset_request(
+            db=db,
+            email=request.email,
+        )
+
+        return {
+            "message": "Password reset token generated",
+            "reset_token": token,
+        }
+
+    except ValueError as e:
+        raise HTTPException(
+            status_code=404,
             detail=str(e),
         )

@@ -1,10 +1,13 @@
 from sqlalchemy.orm import Session
+from datetime import datetime, timedelta, UTC
 
 from backend.app.core.security import (
     hash_password,
     verify_password,
     create_access_token,
+    create_password_reset_token,
 )
+from backend.app.models.password_reset_token import PasswordResetToken
 
 from backend.app.models.user import User
 
@@ -151,3 +154,38 @@ def deactivate_user(
     db.refresh(current_user)
 
     return current_user
+
+def create_password_reset_request(
+    db: Session,
+    email: str,
+) -> str:
+
+    # Find the user
+    user = (
+        db.query(User)
+        .filter(User.email == email)
+        .first()
+    )
+
+    if not user:
+        raise ValueError("User not found")
+
+    # Generate secure reset token
+    token = create_password_reset_token()
+
+    # Token expires after 30 minutes
+    expires_at = datetime.now(UTC) + timedelta(minutes=30)
+
+    # Create reset-token record
+    reset_token = PasswordResetToken(
+        user_id=user.id,
+        token=token,
+        expires_at=expires_at,
+    )
+
+    # Save to database
+    db.add(reset_token)
+    db.commit()
+    db.refresh(reset_token)
+
+    return token

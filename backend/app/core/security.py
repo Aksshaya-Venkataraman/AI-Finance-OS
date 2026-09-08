@@ -1,3 +1,4 @@
+import secrets
 from datetime import datetime, timedelta, UTC
 
 from jose import JWTError, jwt
@@ -58,3 +59,5 @@ def decode_access_token(token: str) -> dict:
         return payload
     except JWTError:
         raise ValueError("Invalid or expired token")
+def create_password_reset_token() -> str:
+    return secrets.token_urlsafe(32)
