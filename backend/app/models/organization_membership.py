@@ -4,6 +4,7 @@ from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, UniqueCon
 from sqlalchemy.orm import Mapped, mapped_column
 
 from backend.app.database.base import Base
+from backend.app.models.roles import OrganizationRole
 
 
 class OrganizationMembership(Base):
@@ -35,10 +36,10 @@ class OrganizationMembership(Base):
         index=True,
     )
 
-    role: Mapped[str] = mapped_column(
-        String(50),
-        nullable=False,
-        default="FINANCE_ANALYST",
+    role: Mapped[OrganizationRole] = mapped_column(
+    String(50),
+    nullable=False,
+    default=OrganizationRole.FINANCE_ANALYST,
     )
 
     is_active: Mapped[bool] = mapped_column(
