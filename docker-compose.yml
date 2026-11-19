@@ -89,7 +89,10 @@ services:
 
   redis:
     <<: *hardening
-    image: redis:7-alpine
+    image: redis:8-alpine
+    # Start as the image's unprivileged user: with all capabilities dropped the
+    # entrypoint cannot switch users itself.
+    user: redis
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD:?}", "--save", "", "--appendonly", "no"]
     environment:
       REDISCLI_AUTH: ${REDIS_PASSWORD:?}
