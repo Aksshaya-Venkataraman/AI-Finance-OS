@@ -42,7 +42,8 @@ services:
       ENVIRONMENT: production
       SECRET_KEY: ${SECRET_KEY:?}
       DATABASE_URL: postgresql+psycopg://${APP_DB_USER:?}:${APP_DB_PASSWORD:?}@db:5432/${APP_DB_NAME:?}
-      ALLOWED_HOSTS: ${DOMAIN},localhost,127.0.0.1
+      # "api" is the Host header Caddy uses for its upstream health checks.
+      ALLOWED_HOSTS: ${DOMAIN},api,localhost,127.0.0.1
       CORS_ORIGINS: ${CORS_ORIGINS:-}
       RATE_LIMIT_STORAGE_URI: redis://:${REDIS_PASSWORD:?}@redis:6379/0
       # Only Caddy can reach this container, so its X-Forwarded-For is trusted.
