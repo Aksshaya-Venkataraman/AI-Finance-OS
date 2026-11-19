@@ -1,0 +1,30 @@
+[project]
+name = "ai-finance-os"
+version = "2.0.0"
+description = "Multi-agent personal finance platform (FastAPI)"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+addopts = "-q"
+pythonpath = [".", "tests"]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["backend"]
+
+[tool.ruff]
+line-length = 135
+target-version = "py312"
+extend-exclude = ["alembic/versions/dd841764925b_create_users_table.py",
+                  "alembic/versions/2ff80bf67b29_update_user_authentication_fields.py",
+                  "alembic/versions/d3c649f0e4b0_add_password_reset_tokens.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF"]
+ignore = ["B008", "RUF001", "RUF012", "SIM108"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "E402"]
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv"]
