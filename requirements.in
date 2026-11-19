@@ -1,0 +1,20 @@
+# Direct runtime dependencies. Regenerate the hash-locked requirements.txt with:
+#   uv pip compile requirements.in --generate-hashes --python-version 3.13 \
+#     --python-platform x86_64-unknown-linux-gnu -o requirements.txt
+fastapi==0.165.0
+uvicorn==0.54.0
+pydantic==2.14.4
+pydantic-settings==2.16.3
+email-validator==2.4.0
+dnspython>=2.9.2  # CVE-2026-128089 (transitive via email-validator)
+python-multipart==0.0.34
+sqlalchemy==2.1.9
+psycopg[binary]==3.3.9
+alembic==1.20.1
+pyjwt==2.15.1
+argon2-cffi==25.1.0
+# Verifies password hashes created by the previous passlib/bcrypt version;
+# they are upgraded to Argon2id at the next login.
+bcrypt==5.0.0
+limits[redis]==5.8.0
+anthropic==2.10.0

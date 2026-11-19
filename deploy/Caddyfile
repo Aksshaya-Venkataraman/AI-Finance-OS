@@ -1,0 +1,26 @@
+# Public entry point. Caddy obtains and renews TLS certificates automatically
+# (Let's Encrypt for a real domain, a local CA for DOMAIN=localhost).
+{$DOMAIN} {
+	encode zstd gzip
+
+	request_body {
+		max_size 2MB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=63072000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		-Server
+		-Via
+	}
+
+	reverse_proxy api:8000 {
+		health_uri /health
+		health_interval 15s
+	}
+
+	log {
+		output stdout
+		format json
+	}
+}
