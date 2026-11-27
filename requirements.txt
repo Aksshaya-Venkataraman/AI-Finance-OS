@@ -12,9 +12,9 @@ annotated-types==0.8.0 \
     --hash=sha256:13b2beaad985e05e2d6407ee4c4f35590b11f8d693a258a561055cac8f64cab7 \
     --hash=sha256:f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0
     # via pydantic
-anthropic==2.10.0 \
-    --hash=sha256:1b91b2b4aa2bab44db8712e8a9053454bcff6daa3e6f5f11d85dc38b37d0a2a3 \
-    --hash=sha256:6f3ffbdc6eb0a09a197be2eabdc62b8395a13d692710b8cdfa0393a80b355585
+anthropic==2.13.0 \
+    --hash=sha256:966718543d354aae57cba5b8b5693491b9538a55ac8d83d3ddc54448ae8f58e7 \
+    --hash=sha256:b9f61dc45a9630108f96135ecb726ffe1a6fd1f70dd2c9db5621eaaca62c16ec
     # via -r requirements.in
 anyio==4.14.2 \
     --hash=sha256:9f505dda5ac9f0c8309b5e8bd445a8c2bf7246f3ce950121e45ea15bc41d1494 \
@@ -392,7 +392,7 @@ jiter==0.19.0 \
     --hash=sha256:fdc0a6ddcc9228a0955b350509041c9321af91e928c918402d0212d5fd315355 \
     --hash=sha256:fe16c8e0caf7513c6b4e1c6466761b153aa16c4e18a84ddcf6dcf731b2bace1a
     # via anthropic
-limits==5.8.0 \
+limits[redis]==5.8.0 \
     --hash=sha256:ae1b008a43eb43073c3c579398bd4eb4c795de60952532dc24720ab45e1ac6b8 \
     --hash=sha256:c9e0d74aed837e8f6f50d1fcebcf5fd8130957287206bc3799adaee5092655da
     # via -r requirements.in
@@ -501,7 +501,7 @@ packaging==26.3 \
     --hash=sha256:94edc256424af38762eb31306eed28beb9f0efc50a8837492c9d6fd6004aed79 \
     --hash=sha256:d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c
     # via limits
-psycopg==3.3.9 \
+psycopg[binary]==3.3.9 \
     --hash=sha256:87c1d85c3e0e88e811d3c0b3808f947bd967c6faf34af6cd86fd021f77793d6c \
     --hash=sha256:d2d7d04a1ce6dab4f5b27316bea3b52585cafa2f2d631e5b09dd69823f5c26f6
     # via -r requirements.in
@@ -843,13 +843,17 @@ typing-extensions==4.16.0 \
     # via
     #   alembic
     #   anthropic
+    #   anyio
     #   fastapi
+    #   httpx2
     #   limits
     #   opentelemetry-api
+    #   psycopg
     #   pydantic
     #   pydantic-core
     #   pydantic-settings
     #   sqlalchemy
+    #   starlette
     #   typing-inspection
 typing-inspection==0.4.5 \
     --hash=sha256:7f16c411e7930dc79596d42ab44672a3fe5f60eb34b781a1647e7872363120c7 \
