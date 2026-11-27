@@ -17,4 +17,4 @@ argon2-cffi==25.1.0
 # they are upgraded to Argon2id at the next login.
 bcrypt==5.0.0
 limits[redis]==5.8.0
-anthropic==2.10.0
+anthropic==2.13.0
