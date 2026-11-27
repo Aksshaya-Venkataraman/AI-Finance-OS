@@ -68,7 +68,7 @@ services:
     networks: [edge, backend]
 
   db:
-    image: postgres:17-alpine
+    image: postgres:19-alpine
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
